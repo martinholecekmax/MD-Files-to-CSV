@@ -124,12 +124,17 @@ def processSingleFile(filename, df_in):
             # print(optionName)
             # print(names)
 
+            if optionName == "Add Ground Anchor Bolts?" or optionName == "Add Heavy Duty Padlock?" or optionName == "Add Post Mix?":
+                continue
             ### Create dictionary for each option where key is optionName and value is single option ###
             combinedNames = []
             for name in names:
-                combinedNames.append([optionName, name])
-
-            allOptions.append(combinedNames)
+                if name == "Powder Coated" or name == "RAL 3020" or name == "RAL 5010" or name == "RAL 6005" or name == "RAL 7037" or name == "RAL 8017" or name == "RAL 9005":
+                    continue
+                else:
+                    combinedNames.append([optionName, name])
+            if len(combinedNames) > 0:
+                allOptions.append(combinedNames)
 
         #### Get all combinations and create Pandas Dataframe ####
         combinations = printCombination(allOptions)
@@ -140,10 +145,10 @@ def processSingleFile(filename, df_in):
 
 
 ##### Get filenames of all products, extract options and store all combinations into the CSV file #####
-md_files = glob('./test-products/**/index.md', recursive=True)
+md_files = glob('./products/**/index.md', recursive=True)
 df = pd.DataFrame()
 for md in md_files:
     df = processSingleFile(md, df)
-df.to_csv('test.csv', index=False)
+df.to_csv('test2.csv', index=False)
 
 # df = processSingleFile("/test-products/test/index.md", df) # Testing of single product
